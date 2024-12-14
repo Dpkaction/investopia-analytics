@@ -21,26 +21,68 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue, showLine }) => {
 
   useEffect(() => {
     if (showLine) {
-      const newData = generateChartData(coinValue);
+      const newData = generateChartData(coinValue, timeFrame);
       setData(newData);
     } else {
       setData([]);
     }
-  }, [coinValue, showLine]);
+  }, [coinValue, showLine, timeFrame]);
 
-  const generateChartData = (value: number) => {
+  const generateChartData = (value: number, timeFrame: string) => {
     const data = [];
     const months = ['Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
     const steps = 20;
+    const maxInvestors = 100000;
+    
+    // Calculate time intervals based on timeFrame
+    const getTimePoints = () => {
+      switch(timeFrame) {
+        case '5min':
+          return Array.from({length: steps}, (_, i) => `${i * 5}m`);
+        case '15min':
+          return Array.from({length: steps}, (_, i) => `${i * 15}m`);
+        case '30min':
+          return Array.from({length: steps}, (_, i) => `${i * 30}m`);
+        case '1h':
+          return Array.from({length: steps}, (_, i) => `${i}h`);
+        case '1d':
+          return Array.from({length: steps}, (_, i) => `Day ${i + 1}`);
+        case '1M':
+          return months;
+        case '1Y':
+          return Array.from({length: 12}, (_, i) => months[i % months.length]);
+        default:
+          return Array.from({length: steps}, (_, i) => `${i * 5}m`);
+      }
+    };
+
+    const timePoints = getTimePoints();
     
     for (let i = 0; i < steps; i++) {
       const progress = i / (steps - 1);
+      const currentValue = progress * value;
+      
+      // Calculate precise decimal values with 3 decimal places
+      const formattedValue = Number(currentValue.toFixed(3));
+      
+      // Calculate investors based on progress (0 to maxInvestors)
+      const investors = Math.floor(progress * maxInvestors);
+      
       data.push({
-        month: months[Math.floor((progress * (months.length - 1)))],
-        value: progress * value,
+        time: timePoints[i],
+        value: formattedValue,
+        investors: investors,
       });
     }
     return data;
+  };
+
+  const formatYAxis = (value: number) => {
+    return value.toFixed(3);
+  };
+
+  const formatInvestors = (value: number) => {
+    return `${(value).toLocaleString()} inv.`;
   };
 
   return (
@@ -65,9 +107,30 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue, showLine }) => {
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="month" />
-          <YAxis domain={[0, 'auto']} />
-          <Tooltip />
+          <XAxis 
+            dataKey="time" 
+            label={{ 
+              value: 'Investors', 
+              position: 'bottom',
+              offset: 0
+            }}
+          />
+          <YAxis 
+            domain={[0, 'auto']}
+            tickFormatter={formatYAxis}
+            label={{ 
+              value: 'Price', 
+              angle: -90, 
+              position: 'insideLeft',
+              offset: 10
+            }}
+          />
+          <Tooltip 
+            formatter={(value: number) => [
+              `Price: ${value.toFixed(3)}`,
+              `Investors: ${formatInvestors(data[data.findIndex(d => d.value === value)]?.investors || 0)}`
+            ]}
+          />
           {showLine && (
             <Line
               type="monotone"

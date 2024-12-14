@@ -116,12 +116,20 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue, showLine }) => {
             }}
           />
           <YAxis 
+            yAxisId="left"
+            orientation="left"
+            stroke="transparent"
+            tickFormatter={formatYAxis}
+          />
+          <YAxis 
+            yAxisId="right"
+            orientation="right"
             domain={[0, 'auto']}
             tickFormatter={formatYAxis}
             label={{ 
               value: 'Price', 
-              angle: -90, 
-              position: 'insideLeft',
+              angle: 90, 
+              position: 'insideRight',
               offset: 10
             }}
           />
@@ -133,6 +141,7 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue, showLine }) => {
           />
           {showLine && (
             <Line
+              yAxisId="right"
               type="monotone"
               dataKey="value"
               stroke="#6366F1"

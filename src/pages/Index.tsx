@@ -5,11 +5,13 @@ import MetricsCard from '@/components/Dashboard/MetricsCard';
 import PassphraseForm from '@/components/Account/PassphraseForm';
 import AnalyticsCard from '@/components/Analytics/AnalyticsCard';
 import { Button } from '@/components/ui/button';
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [coinValue, setCoinValue] = useState('0');
   const [showLine, setShowLine] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { toast } = useToast();
 
   const handleBuy = () => {
     // Add buy logic here

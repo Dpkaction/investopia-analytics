@@ -5,6 +5,7 @@ import MetricsCard from '@/components/Dashboard/MetricsCard';
 import PassphraseForm from '@/components/Account/PassphraseForm';
 import AnalyticsCard from '@/components/Analytics/AnalyticsCard';
 import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button"; // Add this import
 
 const Index = () => {
   const [showLine, setShowLine] = useState(false);

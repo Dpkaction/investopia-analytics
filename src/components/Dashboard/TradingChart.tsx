@@ -32,17 +32,18 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue, showLine }) => {
     const data = [];
     const steps = 20;
     const maxInvestors = 100000;
+    const maxValue = Math.min(value, 0.035); // Cap at 0.035
     
     const getTimePoints = () => {
       switch(timeFrame) {
+        case '1h':
+          return Array.from({length: steps}, (_, i) => `${i * 3}min`);
         case '1d':
-          return Array.from({length: steps}, (_, i) => `Day ${i + 1}`);
+          return Array.from({length: steps}, (_, i) => `${i}h`);
         case '1w':
-          return Array.from({length: steps}, (_, i) => `Week ${Math.floor(i/7) + 1}, Day ${(i % 7) + 1}`);
-        case '1M':
-          return Array.from({length: steps}, (_, i) => `Month 1, Day ${i + 1}`);
-        default:
           return Array.from({length: steps}, (_, i) => `Day ${i + 1}`);
+        default:
+          return Array.from({length: steps}, (_, i) => `${i}h`);
       }
     };
 
@@ -50,14 +51,12 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue, showLine }) => {
     
     for (let i = 0; i < steps; i++) {
       const progress = i / (steps - 1);
-      const currentValue = progress * value;
-      
-      const formattedValue = Number(currentValue.toFixed(3));
+      const currentValue = progress * maxValue;
       const investors = Math.floor(progress * maxInvestors);
       
       data.push({
         time: timePoints[i],
-        value: formattedValue,
+        value: Number(currentValue.toFixed(3)),
         investors: investors,
       });
     }
@@ -73,11 +72,11 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue, showLine }) => {
   };
 
   return (
-    <Card className="chart-container grid grid-cols-1 md:grid-cols-[1fr_250px]">
+    <Card className="chart-container">
       <div className="chart-area">
         <div className="flex justify-between mb-4">
           <div className="space-x-2">
-            {['1d', '1w', '1M'].map((time) => (
+            {['1h', '1d', '1w'].map((time) => (
               <button
                 key={time}
                 onClick={() => setTimeFrame(time)}
@@ -93,7 +92,7 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue, showLine }) => {
           </div>
         </div>
         <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={data}>
+          <LineChart data={data} margin={{ right: 50 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis 
               dataKey="time" 
@@ -106,13 +105,19 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue, showLine }) => {
             <YAxis 
               yAxisId="left"
               orientation="left"
-              stroke="transparent"
-              tickFormatter={formatYAxis}
+              domain={[0, 'auto']}
+              tickFormatter={formatInvestors}
+              label={{ 
+                value: 'Investors', 
+                angle: -90, 
+                position: 'insideLeft',
+                offset: 10
+              }}
             />
             <YAxis 
               yAxisId="right"
               orientation="right"
-              domain={[0, 'auto']}
+              domain={[0, 0.035]}
               tickFormatter={formatYAxis}
               label={{ 
                 value: 'Price', 
@@ -122,35 +127,37 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue, showLine }) => {
               }}
             />
             <Tooltip 
-              formatter={(value: number) => [
-                `Price: ${value.toFixed(3)}`,
-                `Investors: ${formatInvestors(data[data.findIndex(d => d.value === value)]?.investors || 0)}`
-              ]}
+              formatter={(value: number, name: string) => {
+                if (name === 'value') {
+                  return [`$${value.toFixed(3)}`, 'Price'];
+                }
+                return [`${formatInvestors(value)}`, 'Investors'];
+              }}
             />
             {showLine && (
-              <Line
-                yAxisId="right"
-                type="monotone"
-                dataKey="value"
-                stroke="#6366F1"
-                strokeWidth={2}
-                dot={false}
-                animationDuration={1000}
-              />
+              <>
+                <Line
+                  yAxisId="right"
+                  type="monotone"
+                  dataKey="value"
+                  stroke="#6366F1"
+                  strokeWidth={2}
+                  dot={false}
+                  animationDuration={1000}
+                />
+                <Line
+                  yAxisId="left"
+                  type="monotone"
+                  dataKey="investors"
+                  stroke="#22C55E"
+                  strokeWidth={2}
+                  dot={false}
+                  animationDuration={1000}
+                />
+              </>
             )}
           </LineChart>
         </ResponsiveContainer>
-      </div>
-      <div className="pricing-details bg-card p-4 rounded-lg border border-border">
-        <h3 className="text-lg font-semibold mb-4">Price Details</h3>
-        <div className="space-y-2">
-          {data.map((item, index) => (
-            <div key={index} className="flex justify-between">
-              <span className="text-muted-foreground">{item.time}</span>
-              <span className="font-medium">${item.value.toFixed(3)}</span>
-            </div>
-          ))}
-        </div>
       </div>
     </Card>
   );

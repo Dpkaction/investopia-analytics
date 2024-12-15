@@ -5,7 +5,7 @@ import MetricsCard from '@/components/Dashboard/MetricsCard';
 import PassphraseForm from '@/components/Account/PassphraseForm';
 import AnalyticsCard from '@/components/Analytics/AnalyticsCard';
 import { useToast } from "@/hooks/use-toast";
-import { Button } from "@/components/ui/button"; // Add this import
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
   const [showLine, setShowLine] = useState(false);
@@ -54,10 +54,10 @@ const Index = () => {
           <TradingChart coinValue={fixedCoinValue} showLine={showLine} />
 
           <div className="flex justify-center space-x-4 mt-8">
-            <Button onClick={handleBuy} className="buy-button">
+            <Button onClick={handleBuy} className="bg-success hover:bg-success-hover text-white">
               Buy BTZ
             </Button>
-            <Button onClick={handleSell} className="sell-button">
+            <Button onClick={handleSell} variant="destructive">
               Sell BTZ
             </Button>
           </div>
@@ -73,7 +73,7 @@ const Index = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <MetricsCard title="BTZ Balance" value={`${fixedCoinValue} BTZ`} />
                 <div className="flex items-center justify-end">
-                  <Button onClick={handleSell} className="sell-button">
+                  <Button onClick={handleSell} variant="destructive">
                     Sell BTZ
                   </Button>
                 </div>
@@ -96,13 +96,15 @@ const Index = () => {
               change="+5.7%"
             />
             <AnalyticsCard
-              title="Community Members"
-              value="5,678"
+              title="Owners"
+              value="120"
+              icon="users"
               change="+8.9%"
             />
             <AnalyticsCard
-              title="Buyer/Seller Ratio"
-              value="91% / 9%"
+              title="Mining Groups"
+              value="20+"
+              icon="miners"
             />
           </div>
         </TabsContent>

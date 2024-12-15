@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
 
 const TOTAL_LENGTH = 26;
+const PASSPHRASE_PATTERN = /^.{5}021au.*120btz.{3}$/;
 
 const PassphraseForm: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
   const [passphrase, setPassphrase] = useState('');
@@ -11,10 +12,10 @@ const PassphraseForm: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (passphrase.length !== TOTAL_LENGTH) {
+    if (passphrase.length !== TOTAL_LENGTH || !PASSPHRASE_PATTERN.test(passphrase)) {
       toast({
         title: "Invalid Passphrase",
-        description: "Please enter a 26-character passphrase.",
+        description: "Please enter a valid 26-digit passphrase with the correct pattern.",
         variant: "destructive",
       });
       return;
@@ -32,10 +33,10 @@ const PassphraseForm: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
           value={passphrase}
           onChange={(e) => setPassphrase(e.target.value)}
           className="w-full"
-          placeholder="Enter 26-character passphrase"
+          placeholder="Enter 26-digit passphrase"
         />
         <p className="text-sm text-muted-foreground mt-2">
-          Please enter a 26-character passphrase
+          Format: XXXXX021auXXXXXXXXXXXX120btzXXX (26 digits)
         </p>
       </div>
       <Button type="submit" className="w-full">Login</Button>

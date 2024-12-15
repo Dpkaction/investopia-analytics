@@ -6,13 +6,14 @@ interface MetricsCardProps {
   value: string | number;
   onChange?: (value: string) => void;
   isInput?: boolean;
+  isFixed?: boolean;
 }
 
-const MetricsCard: React.FC<MetricsCardProps> = ({ title, value, onChange, isInput }) => {
+const MetricsCard: React.FC<MetricsCardProps> = ({ title, value, onChange, isInput, isFixed }) => {
   return (
     <Card className="metrics-card">
       <h3 className="text-sm font-medium text-muted-foreground mb-2">{title}</h3>
-      {isInput ? (
+      {isInput && !isFixed ? (
         <input
           type="number"
           value={value}

@@ -47,7 +47,7 @@ const PassphraseForm: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
           Please enter your 26-character passphrase
         </p>
       </div>
-      <Button type="submit" className="w-full">Login</Button>
+      <Button type="submit" className="w-full">Logged In</Button>
     </form>
   );
 };

@@ -44,10 +44,10 @@ const PassphraseForm: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
           placeholder="Enter 26-character passphrase"
         />
         <p className="text-sm text-muted-foreground mt-2">
-          Please enter your 26-character passphrase
+          Please enter your character passphrase
         </p>
       </div>
-      <Button type="submit" className="w-full">Logged In</Button>
+      <Button type="submit" className="w-full">Login</Button>
     </form>
   );
 };

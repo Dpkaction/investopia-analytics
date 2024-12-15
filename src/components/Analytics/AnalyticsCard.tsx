@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { Users, Pick } from 'lucide-react';
+import { Users, Pickaxe } from 'lucide-react';
 
 interface AnalyticsCardProps {
   title: string;
@@ -26,7 +26,7 @@ const AnalyticsCard: React.FC<AnalyticsCardProps> = ({ title, value, change, ico
         </div>
         <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
           {icon === 'users' && <Users className="h-6 w-6 text-primary" />}
-          {icon === 'miners' && <Pick className="h-6 w-6 text-primary" />}
+          {icon === 'miners' && <Pickaxe className="h-6 w-6 text-primary" />}
         </div>
       </div>
     </Card>

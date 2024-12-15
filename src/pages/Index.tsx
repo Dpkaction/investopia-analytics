@@ -92,14 +92,16 @@ const Index = () => {
         <TabsContent value="analytics">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <AnalyticsCard
-              title="Visitors"
-              value="12,345"
+              title="Owners"
+              value="120"
               change="+12.3%"
+              icon="users"
             />
             <AnalyticsCard
-              title="Transactions"
-              value="1,234"
+              title="Mining Groups"
+              value="20+"
               change="+5.7%"
+              icon="miners"
             />
             <AnalyticsCard
               title="Community Members"

@@ -14,7 +14,7 @@ const MetricsCard: React.FC<MetricsCardProps> = ({ title, value, onChange, isInp
       <h3 className="text-sm font-medium text-muted-foreground mb-2">{title}</h3>
       {isInput ? (
         <input
-          type="number"
+          type="text"
           value={value}
           onChange={(e) => onChange?.(e.target.value)}
           className="w-full bg-background border border-input rounded-md px-3 py-2 text-lg font-semibold"

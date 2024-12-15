@@ -110,16 +110,10 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue, showLine }) => {
           <XAxis 
             dataKey="time" 
             label={{ 
-              value: 'Investors', 
+              value: 'Time', 
               position: 'bottom',
               offset: 0
             }}
-          />
-          <YAxis 
-            yAxisId="left"
-            orientation="left"
-            stroke="transparent"
-            tickFormatter={formatYAxis}
           />
           <YAxis 
             yAxisId="right"
@@ -134,10 +128,7 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue, showLine }) => {
             }}
           />
           <Tooltip 
-            formatter={(value: number) => [
-              `Price: ${value.toFixed(3)}`,
-              `Investors: ${formatInvestors(data[data.findIndex(d => d.value === value)]?.investors || 0)}`
-            ]}
+            formatter={(value: number) => [`${value.toFixed(3)}`, 'Price']}
           />
           {showLine && (
             <Line

@@ -4,27 +4,29 @@ import TradingChart from '@/components/Dashboard/TradingChart';
 import MetricsCard from '@/components/Dashboard/MetricsCard';
 import PassphraseForm from '@/components/Account/PassphraseForm';
 import AnalyticsCard from '@/components/Analytics/AnalyticsCard';
+import { Button } from '@/components/ui/button';
 import { useToast } from "@/hooks/use-toast";
-import { Button } from "@/components/ui/button";
 
 const Index = () => {
+  const [coinValue, setCoinValue] = useState('0');
   const [showLine, setShowLine] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { toast } = useToast();
-  const fixedCoinValue = 0.60;
 
   const handleBuy = () => {
+    // Add buy logic here
     toast({
       title: "Buy Order Placed",
-      description: `Successfully placed buy order for ${fixedCoinValue} BTZ`,
+      description: `Successfully placed buy order for ${coinValue} BTZ`,
       variant: "default",
     });
   };
 
   const handleSell = () => {
+    // Add sell logic here
     toast({
       title: "Sell Order Placed",
-      description: `Successfully placed sell order for ${fixedCoinValue} BTZ`,
+      description: `Successfully placed sell order for ${coinValue} BTZ`,
       variant: "destructive",
     });
   };
@@ -44,22 +46,26 @@ const Index = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <MetricsCard
               title="Coin Value"
-              value={fixedCoinValue}
-              isFixed={true}
+              value={coinValue}
+              onChange={(value) => {
+                setCoinValue(value);
+                setShowLine(true);
+              }}
+              isInput
             />
             <MetricsCard title="Total Valuation" value="$1,234,567" />
             <MetricsCard title="Total Investors" value="1,234" />
           </div>
 
-          <TradingChart coinValue={fixedCoinValue} showLine={showLine} />
+          <TradingChart coinValue={Number(coinValue)} showLine={showLine} />
 
           <div className="flex justify-center space-x-4 mt-8">
-            <Button onClick={handleBuy} className="bg-success hover:bg-success-hover text-white">
+            <button onClick={handleBuy} className="buy-button">
               Buy BTZ
-            </Button>
-            <Button onClick={handleSell} variant="destructive">
+            </button>
+            <button onClick={handleSell} className="sell-button">
               Sell BTZ
-            </Button>
+            </button>
           </div>
         </TabsContent>
 
@@ -71,14 +77,14 @@ const Index = () => {
           ) : (
             <div className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <MetricsCard title="BTZ Balance" value={`${fixedCoinValue} BTZ`} />
+                <MetricsCard title="BTZ Balance" value="1 BTZ" />
                 <div className="flex items-center justify-end">
-                  <Button onClick={handleSell} variant="destructive">
+                  <button className="sell-button">
                     Sell BTZ
-                  </Button>
+                  </button>
                 </div>
               </div>
-              <TradingChart coinValue={fixedCoinValue} showLine={showLine} />
+              <TradingChart coinValue={Number(coinValue)} showLine={showLine} />
             </div>
           )}
         </TabsContent>
@@ -96,15 +102,13 @@ const Index = () => {
               change="+5.7%"
             />
             <AnalyticsCard
-              title="Owners"
-              value="120"
-              icon="users"
+              title="Community Members"
+              value="5,678"
               change="+8.9%"
             />
             <AnalyticsCard
-              title="Mining Groups"
-              value="20+"
-              icon="miners"
+              title="Buyer/Seller Ratio"
+              value="91% / 9%"
             />
           </div>
         </TabsContent>

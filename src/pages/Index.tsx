@@ -4,26 +4,58 @@ import TradingChart from '@/components/Dashboard/TradingChart';
 import MetricsCard from '@/components/Dashboard/MetricsCard';
 import PassphraseForm from '@/components/Account/PassphraseForm';
 import AnalyticsCard from '@/components/Analytics/AnalyticsCard';
-import { Button } from '@/components/ui/button';
 import { useToast } from "@/hooks/use-toast";
+import { buyBTZ, connectWallet } from '@/utils/web3';
 
 const Index = () => {
   const [coinValue, setCoinValue] = useState('0');
   const [showLine, setShowLine] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
+  const [walletAddress, setWalletAddress] = useState('');
   const { toast } = useToast();
 
-  const handleBuy = () => {
-    // Add buy logic here
-    toast({
-      title: "Buy Order Placed",
-      description: `Successfully placed buy order for ${coinValue} BTZ`,
-      variant: "default",
-    });
+  const handleConnectWallet = async () => {
+    try {
+      const { account } = await connectWallet();
+      setWalletAddress(account);
+      setIsConnected(true);
+      toast({
+        title: "Wallet Connected",
+        description: `Connected to ${account.slice(0, 6)}...${account.slice(-4)}`,
+        variant: "default",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Connection Failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleBuy = async () => {
+    try {
+      if (!isConnected) {
+        await handleConnectWallet();
+      }
+      
+      const receipt = await buyBTZ(coinValue);
+      toast({
+        title: "Buy Order Placed",
+        description: `Successfully bought ${coinValue} BTZ. Transaction hash: ${receipt.hash.slice(0, 6)}...${receipt.hash.slice(-4)}`,
+        variant: "default",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Transaction Failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
   };
 
   const handleSell = () => {
-    // Add sell logic here
     toast({
       title: "Sell Order Placed",
       description: `Successfully placed sell order for ${coinValue} BTZ`,
@@ -60,6 +92,14 @@ const Index = () => {
           <TradingChart coinValue={Number(coinValue)} showLine={showLine} />
 
           <div className="flex justify-center space-x-4 mt-8">
+            {!isConnected && (
+              <button
+                onClick={handleConnectWallet}
+                className="bg-primary text-primary-foreground px-6 py-2 rounded-md hover:bg-primary/90"
+              >
+                Connect Wallet
+              </button>
+            )}
             <button onClick={handleBuy} className="buy-button">
               Buy BTZ
             </button>

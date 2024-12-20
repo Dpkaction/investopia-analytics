@@ -6,8 +6,8 @@ const CONTRACT_ABI = [
   "function getTransactionHistory(address user) public view returns (uint256[])",
 ];
 
-// Replace with your deployed contract address
-const CONTRACT_ADDRESS = "0x0000000000000000000000000000000000000000";
+// Contract address
+const CONTRACT_ADDRESS = "0x9177E4c474f111689eD87937eeAd5FFd84A2474B";
 
 export const connectWallet = async () => {
   try {

@@ -40,6 +40,15 @@ const Index = () => {
         await handleConnectWallet();
       }
       
+      if (Number(coinValue) <= 0) {
+        toast({
+          title: "Invalid Amount",
+          description: "Please enter a valid amount greater than 0",
+          variant: "destructive",
+        });
+        return;
+      }
+
       const receipt = await buyBTZ(coinValue);
       toast({
         title: "Buy Order Placed",
@@ -100,10 +109,16 @@ const Index = () => {
                 Connect Wallet
               </button>
             )}
-            <button onClick={handleBuy} className="buy-button">
+            <button 
+              onClick={handleBuy} 
+              className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600"
+            >
               Buy BTZ
             </button>
-            <button onClick={handleSell} className="sell-button">
+            <button 
+              onClick={handleSell}
+              className="bg-red-500 text-white px-6 py-2 rounded-md hover:bg-red-600"
+            >
               Sell BTZ
             </button>
           </div>

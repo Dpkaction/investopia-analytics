@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import TradingChart from '@/components/Dashboard/TradingChart';
 import MetricsCard from '@/components/Dashboard/MetricsCard';
 import PassphraseForm from '@/components/Account/PassphraseForm';
@@ -13,6 +16,8 @@ const Index = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [walletAddress, setWalletAddress] = useState('');
+  const [buyDialogOpen, setBuyDialogOpen] = useState(false);
+  const [buyAmount, setBuyAmount] = useState('');
   const { toast } = useToast();
 
   const handleConnectWallet = async () => {
@@ -34,13 +39,13 @@ const Index = () => {
     }
   };
 
-  const handleBuy = async () => {
+  const handleBuySubmit = async () => {
     try {
       if (!isConnected) {
         await handleConnectWallet();
       }
       
-      if (Number(coinValue) <= 0) {
+      if (Number(buyAmount) <= 0) {
         toast({
           title: "Invalid Amount",
           description: "Please enter a valid amount greater than 0",
@@ -49,10 +54,12 @@ const Index = () => {
         return;
       }
 
-      const receipt = await buyBTZ(coinValue);
+      const receipt = await buyBTZ(buyAmount);
+      setBuyDialogOpen(false);
+      setBuyAmount('');
       toast({
         title: "Buy Order Placed",
-        description: `Successfully bought ${coinValue} BTZ. Transaction hash: ${receipt.hash.slice(0, 6)}...${receipt.hash.slice(-4)}`,
+        description: `Successfully bought ${buyAmount} BTZ. Transaction hash: ${receipt.hash.slice(0, 6)}...${receipt.hash.slice(-4)}`,
         variant: "default",
       });
     } catch (error: any) {
@@ -74,6 +81,30 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
+      <Dialog open={buyDialogOpen} onOpenChange={setBuyDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Buy BTZ Tokens</DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <Input
+              type="number"
+              placeholder="Enter amount to buy"
+              value={buyAmount}
+              onChange={(e) => setBuyAmount(e.target.value)}
+            />
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setBuyDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleBuySubmit}>
+              Confirm Purchase
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       <Tabs defaultValue="dashboard" className="space-y-8">
         <TabsList className="grid w-full grid-cols-3 max-w-md mx-auto">
           <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
@@ -110,7 +141,7 @@ const Index = () => {
               </button>
             )}
             <button 
-              onClick={handleBuy} 
+              onClick={() => setBuyDialogOpen(true)} 
               className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600"
             >
               Buy BTZ

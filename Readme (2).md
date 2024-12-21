@@ -1,47 +1,42 @@
-# Educational Token
-
-## Project Title
-**Educational Token**
+# Trading Dashboard
 
 ## Project Description
-Educational Token (EDU) is an Ethereum-based cryptocurrency designed to incentivize learning by rewarding users with tokens for watching educational videos. By combining blockchain technology with education, this project aims to create an engaging and rewarding learning experience for users while fostering knowledge-sharing and self-improvement.
+The Trading Dashboard is an innovative web-based platform designed for seamless cryptocurrency trading. It keeps a detailed record of all transactions and provides proof of contract for every trade, ensuring transparency and reliability for users. With a user-friendly interface and robust features, the dashboard empowers traders to manage their portfolio effectively.
 
 ## Contract Address
-> 0xBB812f534D4Feb77904DB8E088CB6Cf270d800b8
+`0x9177E4c474f111689eD87937eeAd5FFd84A2474B`
+![contract git](https://github.com/user-attachments/assets/892ea2b7-ec29-45ad-82c4-844c27873eef)
+
 
 ## Project Vision
-Our vision is to create a decentralized platform that revolutionizes education by rewarding learning. Educational Token aims to:
-- Promote lifelong learning and knowledge acquisition.
-- Provide financial incentives for users to engage with educational content.
-- Enable educators and content creators to monetize their contributions while ensuring transparency and fairness.
+The vision of the Trading Dashboard is to create a reliable, transparent, and efficient platform for cryptocurrency enthusiasts. By integrating transaction records with blockchain technology, we aim to foster trust and provide users with tools to make informed trading decisions. This project aspires to set a new standard for trading platforms by prioritizing security, usability, and accountability.
 
 ## Key Features
-1. **Token Economy**:
-   - Token Name: Educational Token
-   - Symbol: EDU
-   - Total Supply: 1,000,000 tokens (with 18 decimals).
+- **Comprehensive Transaction Records**: Track every trade made on the platform with detailed logs and proofs stored on the blockchain.
+- **Smart Contract Integration**: Ensure transparency and reliability through blockchain-powered smart contracts.
+- **Secure Wallet Connection**: Easily connect with MetaMask or other Web3 wallets for trading.
+- **Real-Time Trading Insights**: Access up-to-date data to make informed decisions.
+- **User-Friendly Interface**: Navigate through an intuitive dashboard designed for efficiency and ease of use.
+- **Decentralized and Trustworthy**: Built on blockchain technology to provide a tamper-proof trading environment.
 
-2. **Reward for Learning**:
-   - Users earn EDU tokens by watching educational videos.
-   - Each video is assigned a specific token reward by the contract owner.
+## How It Works
+### 1. Connect Your MetaMask Wallet
+   - Open the Trading Dashboard and click on the "Connect Wallet" button.
+   - Ensure MetaMask is installed in your browser.
+   - Approve the connection request in MetaMask to link your wallet with the platform.
 
-3. **Transparent Video Rewards**:
-   - Owners can set rewards for individual videos.
-   - Users can only claim rewards for videos they haven’t already watched.
+### 2. Purchase a Coin
+   - Navigate to the "Purchase" section on the dashboard.
+   - Enter the details of the coin you want to buy, including the amount.
+   - Confirm the transaction using MetaMask. The wallet will display the transaction details, including the gas fee.
 
-4. **Secure Token Transfers**:
-   - Users can transfer EDU tokens to other addresses seamlessly.
-   - All token transfers are recorded on the blockchain for transparency.
+### 3. Complete the Transaction
+   - Approve the transaction in MetaMask.
+   - Once the transaction is successful, the platform will provide you with a unique transaction hash as proof of work.
+   - This transaction hash can be used to verify the transaction on the blockchain.
 
-5. **Ownership Controls**:
-   - The contract owner manages token distribution and video rewards.
-   - Built-in safeguards to ensure only the owner can modify rewards.
+### 4. Access Proof of Work
+   - After completing a transaction, navigate to the "Transaction History" section on the dashboard.
+   - View detailed records of your trades, including the transaction hash and proof of contract.
 
-6. **Blockchain-Powered Accountability**:
-   - Video watch history and rewards are recorded securely on-chain.
-   - Tamper-proof mechanisms prevent fraudulent reward claims.
-
----
-
-For more details about deployment and usage, please refer to the official documentation or contact the project owner. Together, let's make learning a rewarding experience!
-
+With these simple steps, you can successfully trade cryptocurrency on the Trading Dashboard while ensuring transparency and security.

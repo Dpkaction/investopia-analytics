@@ -7,7 +7,7 @@ const CONTRACT_ABI = [
 ];
 
 // Contract address
-const CONTRACT_ADDRESS = "0x9177E4c474f111689eD87937eeAd5FFd84A2474B";
+const CONTRACT_ADDRESS = "0xBB812f534D4Feb77904DB8E088CB6Cf270d800b8";
 
 export const connectWallet = async () => {
   try {

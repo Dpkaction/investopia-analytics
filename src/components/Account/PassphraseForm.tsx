@@ -6,6 +6,7 @@ import { toast } from '@/components/ui/use-toast';
 const TOTAL_LENGTH = 26;
 const PREFIX = '021au';
 const SUFFIX = '120btz';
+const EXAMPLE_PASSPHRASE = '021auXYZ123ABC456DEF789120btz';
 
 const PassphraseForm: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
   const [passphrase, setPassphrase] = useState('');
@@ -32,6 +33,13 @@ const PassphraseForm: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
     onLogin();
   };
 
+  const handleNewUserClick = () => {
+    toast({
+      title: "Registration Coming Soon",
+      description: "New user registration will be available soon. Please check back later.",
+    });
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
@@ -44,10 +52,20 @@ const PassphraseForm: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
           placeholder="Enter 26-character passphrase"
         />
         <p className="text-sm text-muted-foreground mt-2">
-          Please enter your character passphrase
+          Example format: {EXAMPLE_PASSPHRASE}
         </p>
       </div>
       <Button type="submit" className="w-full">Login</Button>
+      <p className="text-sm text-center mt-4">
+        New user?{" "}
+        <button
+          type="button"
+          onClick={handleNewUserClick}
+          className="text-primary hover:underline focus:outline-none"
+        >
+          Click here to register
+        </button>
+      </p>
     </form>
   );
 };

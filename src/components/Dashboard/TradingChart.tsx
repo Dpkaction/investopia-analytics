@@ -32,9 +32,7 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue, showLine }) => {
     const data = [];
     const months = ['Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
     const steps = 20;
-    const maxInvestors = 100000;
     
-    // Calculate time intervals based on timeFrame
     const getTimePoints = () => {
       switch(timeFrame) {
         case '5min':
@@ -61,28 +59,14 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue, showLine }) => {
     for (let i = 0; i < steps; i++) {
       const progress = i / (steps - 1);
       const currentValue = progress * value;
-      
-      // Calculate precise decimal values with 3 decimal places
-      const formattedValue = Number(currentValue.toFixed(3));
-      
-      // Calculate investors based on progress (0 to maxInvestors)
-      const investors = Math.floor(progress * maxInvestors);
+      const formattedValue = Number(currentValue.toFixed(5));
       
       data.push({
         time: timePoints[i],
-        value: formattedValue,
-        investors: investors,
+        value: formattedValue
       });
     }
     return data;
-  };
-
-  const formatYAxis = (value: number) => {
-    return value.toFixed(3);
-  };
-
-  const formatInvestors = (value: number) => {
-    return `${(value).toLocaleString()} inv.`;
   };
 
   return (
@@ -116,23 +100,20 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue, showLine }) => {
             }}
           />
           <YAxis 
-            yAxisId="right"
-            orientation="right"
-            domain={[0, 'auto']}
-            tickFormatter={formatYAxis}
+            domain={[0, coinValue]}
+            tickFormatter={(value) => value.toFixed(5)}
             label={{ 
-              value: 'Price', 
-              angle: 90, 
-              position: 'insideRight',
+              value: 'Price (USD)', 
+              angle: -90, 
+              position: 'insideLeft',
               offset: 10
             }}
           />
           <Tooltip 
-            formatter={(value: number) => [`${value.toFixed(3)}`, 'Price']}
+            formatter={(value: number) => [`$${value.toFixed(5)}`, 'Price']}
           />
           {showLine && (
             <Line
-              yAxisId="right"
               type="monotone"
               dataKey="value"
               stroke="#6366F1"

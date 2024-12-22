@@ -7,11 +7,14 @@ import TradingChart from '@/components/Dashboard/TradingChart';
 import MetricsCard from '@/components/Dashboard/MetricsCard';
 import PassphraseForm from '@/components/Account/PassphraseForm';
 import AnalyticsCard from '@/components/Analytics/AnalyticsCard';
+import DashboardAnalytics from '@/components/Dashboard/DashboardAnalytics';
+import TradingActions from '@/components/Dashboard/TradingActions';
 import { useToast } from "@/hooks/use-toast";
 import { buyBTZ, connectWallet } from '@/utils/web3';
 
+const COIN_VALUE = 0.00035; // Fixed coin value in dollars
+
 const Index = () => {
-  const [coinValue, setCoinValue] = useState('0');
   const [showLine, setShowLine] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
@@ -74,7 +77,7 @@ const Index = () => {
   const handleSell = () => {
     toast({
       title: "Sell Order Placed",
-      description: `Successfully placed sell order for ${coinValue} BTZ`,
+      description: `Successfully placed sell order for BTZ`,
       variant: "destructive",
     });
   };
@@ -116,43 +119,21 @@ const Index = () => {
           <h1 className="text-3xl font-bold text-center mb-8">Trading Dashboard</h1>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <MetricsCard
-              title="Coin Value"
-              value={coinValue}
-              onChange={(value) => {
-                setCoinValue(value);
-                setShowLine(true);
-              }}
-              isInput
-            />
+            <MetricsCard title="Current Price" value={`$${COIN_VALUE}`} />
             <MetricsCard title="Total Valuation" value="$1,234,567" />
             <MetricsCard title="Total Investors" value="1,234" />
           </div>
 
-          <TradingChart coinValue={Number(coinValue)} showLine={showLine} />
+          <TradingChart coinValue={COIN_VALUE} showLine={showLine} />
 
-          <div className="flex justify-center space-x-4 mt-8">
-            {!isConnected && (
-              <button
-                onClick={handleConnectWallet}
-                className="bg-primary text-primary-foreground px-6 py-2 rounded-md hover:bg-primary/90"
-              >
-                Connect Wallet
-              </button>
-            )}
-            <button 
-              onClick={() => setBuyDialogOpen(true)} 
-              className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600"
-            >
-              Buy BTZ
-            </button>
-            <button 
-              onClick={handleSell}
-              className="bg-red-500 text-white px-6 py-2 rounded-md hover:bg-red-600"
-            >
-              Sell BTZ
-            </button>
-          </div>
+          <TradingActions
+            isConnected={isConnected}
+            onConnectWallet={handleConnectWallet}
+            onOpenBuyDialog={() => setBuyDialogOpen(true)}
+            onSell={handleSell}
+          />
+
+          <DashboardAnalytics />
         </TabsContent>
 
         <TabsContent value="account">
@@ -170,7 +151,7 @@ const Index = () => {
                   </button>
                 </div>
               </div>
-              <TradingChart coinValue={Number(coinValue)} showLine={showLine} />
+              <TradingChart coinValue={COIN_VALUE} showLine={showLine} />
             </div>
           )}
         </TabsContent>

@@ -15,7 +15,6 @@ import { buyBTZ, connectWallet } from '@/utils/web3';
 const COIN_VALUE = 0.00035; // Fixed coin value in dollars
 
 const Index = () => {
-  const [showLine, setShowLine] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [walletAddress, setWalletAddress] = useState('');
@@ -76,8 +75,8 @@ const Index = () => {
 
   const handleSell = () => {
     toast({
-      title: "Sell Order Placed",
-      description: `Successfully placed sell order for BTZ`,
+      title: "Insufficient Balance",
+      description: "You don't have enough balance to sell",
       variant: "destructive",
     });
   };
@@ -124,7 +123,7 @@ const Index = () => {
             <MetricsCard title="Total Investors" value="1,234" />
           </div>
 
-          <TradingChart coinValue={COIN_VALUE} showLine={showLine} />
+          <TradingChart coinValue={COIN_VALUE} showLine={true} />
 
           <TradingActions
             isConnected={isConnected}
@@ -146,12 +145,12 @@ const Index = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <MetricsCard title="BTZ Balance" value="1 BTZ" />
                 <div className="flex items-center justify-end">
-                  <button className="sell-button">
+                  <button className="sell-button" onClick={handleSell}>
                     Sell BTZ
                   </button>
                 </div>
               </div>
-              <TradingChart coinValue={COIN_VALUE} showLine={showLine} />
+              <TradingChart coinValue={COIN_VALUE} showLine={true} />
             </div>
           )}
         </TabsContent>

@@ -30,9 +30,7 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue, showLine }) => {
 
   const generateChartData = (value: number, timeFrame: string) => {
     const data = [];
-    const months = ['Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
     const steps = 20;
-    const maxInvestors = 100000;
     
     // Calculate time intervals based on timeFrame
     const getTimePoints = () => {
@@ -48,41 +46,28 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue, showLine }) => {
         case '1d':
           return Array.from({length: steps}, (_, i) => `Day ${i + 1}`);
         case '1M':
-          return months;
+          return Array.from({length: steps}, (_, i) => `Month ${i + 1}`);
         case '1Y':
-          return Array.from({length: 12}, (_, i) => months[i % months.length]);
+          return Array.from({length: steps}, (_, i) => `Year ${i + 1}`);
         default:
           return Array.from({length: steps}, (_, i) => `${i * 5}m`);
       }
     };
 
     const timePoints = getTimePoints();
+    const volatility = 0.0001; // Small price fluctuation
     
     for (let i = 0; i < steps; i++) {
-      const progress = i / (steps - 1);
-      const currentValue = progress * value;
-      
-      // Calculate precise decimal values with 3 decimal places
-      const formattedValue = Number(currentValue.toFixed(3));
-      
-      // Calculate investors based on progress (0 to maxInvestors)
-      const investors = Math.floor(progress * maxInvestors);
+      // Generate price with small random fluctuations around the fixed value
+      const randomFactor = 1 + (Math.random() - 0.5) * volatility;
+      const price = value * randomFactor;
       
       data.push({
         time: timePoints[i],
-        value: formattedValue,
-        investors: investors,
+        value: Number(price.toFixed(6)),
       });
     }
     return data;
-  };
-
-  const formatYAxis = (value: number) => {
-    return value.toFixed(3);
-  };
-
-  const formatInvestors = (value: number) => {
-    return `${(value).toLocaleString()} inv.`;
   };
 
   return (
@@ -116,23 +101,23 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue, showLine }) => {
             }}
           />
           <YAxis 
-            yAxisId="right"
-            orientation="right"
-            domain={[0, 'auto']}
-            tickFormatter={formatYAxis}
+            domain={[
+              (dataMin: number) => dataMin * 0.9999,
+              (dataMax: number) => dataMax * 1.0001
+            ]}
+            tickFormatter={(value) => value.toFixed(6)}
             label={{ 
-              value: 'Price', 
-              angle: 90, 
-              position: 'insideRight',
+              value: 'Price ($)', 
+              angle: -90, 
+              position: 'insideLeft',
               offset: 10
             }}
           />
           <Tooltip 
-            formatter={(value: number) => [`${value.toFixed(3)}`, 'Price']}
+            formatter={(value: number) => [`$${value.toFixed(6)}`, 'Price']}
           />
           {showLine && (
             <Line
-              yAxisId="right"
               type="monotone"
               dataKey="value"
               stroke="#6366F1"

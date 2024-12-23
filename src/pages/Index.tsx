@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import NewTradingChart from '@/components/Dashboard/NewTradingChart';
+import TradingChart from '@/components/Dashboard/TradingChart';
 import MetricsCard from '@/components/Dashboard/MetricsCard';
 import PassphraseForm from '@/components/Account/PassphraseForm';
 import AnalyticsCard from '@/components/Analytics/AnalyticsCard';
@@ -123,7 +123,7 @@ const Index = () => {
             <MetricsCard title="Total Investors" value="1,234" />
           </div>
 
-          <NewTradingChart coinValue={COIN_VALUE} />
+          <TradingChart coinValue={COIN_VALUE} showLine={true} />
 
           <TradingActions
             isConnected={isConnected}
@@ -150,7 +150,7 @@ const Index = () => {
                   </button>
                 </div>
               </div>
-              <NewTradingChart coinValue={COIN_VALUE} />
+              <TradingChart coinValue={COIN_VALUE} showLine={true} />
             </div>
           )}
         </TabsContent>

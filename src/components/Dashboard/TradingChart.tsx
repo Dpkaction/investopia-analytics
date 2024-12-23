@@ -100,12 +100,13 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue, showLine }) => {
             }}
           />
           <YAxis 
+            orientation="right"
             domain={[0, coinValue]}
             tickFormatter={(value) => value.toFixed(5)}
             label={{ 
-              value: 'Price (USD)', 
-              angle: -90, 
-              position: 'insideLeft',
+              value: 'Price', 
+              angle: 90, 
+              position: 'insideRight',
               offset: 10
             }}
           />

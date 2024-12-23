@@ -3,18 +3,25 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
 
-const TOTAL_LENGTH = 26;
+const TOTAL_LENGTH = 27;
 const PREFIX = '021au';
-const SUFFIX = '120btz';
-const EXAMPLE_PASSPHRASE = '021auXYZ123ABC456DEF789120btz';
+const SUFFIX = '@120btz';
+const EXAMPLE_PASSPHRASE = '021auXYZ123ABC456DEF789@120btz';
 
 const PassphraseForm: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
   const [passphrase, setPassphrase] = useState('');
 
   const validatePassphrase = (value: string): boolean => {
     if (value.length !== TOTAL_LENGTH) return false;
-    if (!value.substring(5, 10).includes(PREFIX)) return false;
-    if (!value.substring(TOTAL_LENGTH - 8, TOTAL_LENGTH - 3).includes(SUFFIX)) return false;
+    
+    // Check if passphrase starts with "021au" after first 3 characters
+    const prefix = value.substring(3, 8);
+    if (prefix !== PREFIX) return false;
+    
+    // Check if passphrase ends with "@120btz"
+    const suffix = value.substring(TOTAL_LENGTH - 7);
+    if (suffix !== SUFFIX) return false;
+    
     return true;
   };
 
@@ -24,7 +31,7 @@ const PassphraseForm: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
     if (!validatePassphrase(passphrase)) {
       toast({
         title: "Invalid Passphrase",
-        description: "Please enter a valid 26-character passphrase with the required format.",
+        description: "Please enter a valid 27-character passphrase with the required format.",
         variant: "destructive",
       });
       return;
@@ -49,7 +56,7 @@ const PassphraseForm: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
           value={passphrase}
           onChange={(e) => setPassphrase(e.target.value)}
           className="w-full"
-          placeholder="Enter 26-character passphrase"
+          placeholder="Enter 27-character passphrase"
         />
         <p className="text-sm text-muted-foreground mt-2">
           Example format: {EXAMPLE_PASSPHRASE}

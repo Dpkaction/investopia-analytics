@@ -15,7 +15,6 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue }) => {
   const chartInstance = useRef<Chart | null>(null);
   const [currentTimeframe, setCurrentTimeframe] = useState('5m');
   const [currentPrice, setCurrentPrice] = useState(coinValue);
-  const [priceChange, setPriceChange] = useState(0.00001);
   const [highPrice, setHighPrice] = useState(coinValue + 0.00001);
   const [lowPrice, setLowPrice] = useState(coinValue - 0.00001);
 
@@ -42,7 +41,7 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue }) => {
   const generatePriceData = (timeframe: string) => {
     const timePoints = generateTimePoints(timeframe);
     const data = [];
-    let value = 0;
+    let value = coinValue;
 
     timePoints.forEach((time, i) => {
       value += 0.00001 * (1 + Math.random() * 0.5);
@@ -65,7 +64,6 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue }) => {
     const lastPrice = data[data.length - 1].y;
     
     setCurrentPrice(lastPrice);
-    setPriceChange(lastPrice - data[0].y);
     setHighPrice(Math.max(...data.map(d => d.y)));
     setLowPrice(Math.min(...data.map(d => d.y)));
 
@@ -156,7 +154,6 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue }) => {
     <Card className="bg-[#131722] p-4">
       <PriceInfo
         currentPrice={currentPrice}
-        priceChange={priceChange}
         highPrice={highPrice}
         lowPrice={lowPrice}
       />

@@ -123,7 +123,7 @@ const Index = () => {
             <MetricsCard title="Total Investors" value="1,234" />
           </div>
 
-          <TradingChart coinValue={COIN_VALUE} />
+          <TradingChart coinValue={COIN_VALUE} showLine={true} />
 
           <TradingActions
             isConnected={isConnected}
@@ -150,7 +150,7 @@ const Index = () => {
                   </button>
                 </div>
               </div>
-              <TradingChart coinValue={COIN_VALUE} />
+              <TradingChart coinValue={COIN_VALUE} showLine={true} />
             </div>
           )}
         </TabsContent>

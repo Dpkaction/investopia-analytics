@@ -42,9 +42,7 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue }) => {
     const timePoints = generateTimePoints(timeframe);
     const data = [];
     
-    // Always start from the fixed coin value
     timePoints.forEach((time) => {
-      // Small random fluctuation around coinValue (±0.00001)
       const randomFluctuation = (Math.random() - 0.5) * 0.00002;
       const price = coinValue + randomFluctuation;
       
@@ -65,7 +63,6 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue }) => {
 
     const data = generatePriceData(timeframe);
     
-    // Set current price to the fixed coin value
     setCurrentPrice(coinValue);
     setHighPrice(Math.max(...data.map(d => d.y)));
     setLowPrice(Math.min(...data.map(d => d.y)));
@@ -81,9 +78,9 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue }) => {
           label: 'BTZ/USD',
           data: data,
           borderColor: '#2962FF',
-          backgroundColor: 'rgba(41, 98, 255, 0.1)',
+          backgroundColor: 'transparent',
           borderWidth: 2,
-          fill: true,
+          fill: false,
           tension: 0.4,
           pointRadius: 0,
           pointHoverRadius: 5,
@@ -146,7 +143,6 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue }) => {
 
   useEffect(() => {
     updateChart(currentTimeframe);
-    // Changed interval from 5000 to 10000 (10 seconds)
     const interval = setInterval(() => {
       updateChart(currentTimeframe);
     }, 10000);

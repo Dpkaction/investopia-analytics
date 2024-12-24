@@ -15,8 +15,8 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue }) => {
   const chartInstance = useRef<Chart | null>(null);
   const [currentTimeframe, setCurrentTimeframe] = useState('5m');
   const [currentPrice, setCurrentPrice] = useState(coinValue);
-  const [highPrice, setHighPrice] = useState(coinValue + 0.00001);
-  const [lowPrice, setLowPrice] = useState(coinValue - 0.00001);
+  const [highPrice, setHighPrice] = useState(coinValue);
+  const [lowPrice, setLowPrice] = useState(0);
 
   const generateTimePoints = (timeframe: string) => {
     const points = {
@@ -41,10 +41,11 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue }) => {
   const generatePriceData = (timeframe: string) => {
     const timePoints = generateTimePoints(timeframe);
     const data = [];
+    const step = coinValue / timePoints.length;
     
-    timePoints.forEach((time) => {
-      const randomFluctuation = (Math.random() - 0.5) * 0.00002;
-      const price = coinValue + randomFluctuation;
+    timePoints.forEach((time, index) => {
+      // Generate gradually increasing price from 0 to coinValue
+      const price = step * (index + 1);
       
       data.push({
         x: time,
@@ -64,8 +65,8 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue }) => {
     const data = generatePriceData(timeframe);
     
     setCurrentPrice(coinValue);
-    setHighPrice(Math.max(...data.map(d => d.y)));
-    setLowPrice(Math.min(...data.map(d => d.y)));
+    setHighPrice(coinValue);
+    setLowPrice(0);
 
     if (chartInstance.current) {
       chartInstance.current.destroy();
@@ -109,7 +110,7 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue }) => {
             }
           },
           y: {
-            beginAtZero: false,
+            beginAtZero: true,
             grid: {
               color: 'rgba(255, 255, 255, 0.1)'
             },

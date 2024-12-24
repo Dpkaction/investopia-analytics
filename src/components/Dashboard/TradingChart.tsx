@@ -41,13 +41,16 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue }) => {
   const generatePriceData = (timeframe: string) => {
     const timePoints = generateTimePoints(timeframe);
     const data = [];
-    let value = coinValue;
-
-    timePoints.forEach((time, i) => {
-      value += 0.00001 * (1 + Math.random() * 0.5);
+    
+    // Always start from the fixed coin value
+    timePoints.forEach((time) => {
+      // Small random fluctuation around coinValue (±0.00001)
+      const randomFluctuation = (Math.random() - 0.5) * 0.00002;
+      const price = coinValue + randomFluctuation;
+      
       data.push({
         x: time,
-        y: parseFloat(value.toFixed(5))
+        y: parseFloat(price.toFixed(5))
       });
     });
 
@@ -61,9 +64,9 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue }) => {
     if (!ctx) return;
 
     const data = generatePriceData(timeframe);
-    const lastPrice = data[data.length - 1].y;
     
-    setCurrentPrice(lastPrice);
+    // Set current price to the fixed coin value
+    setCurrentPrice(coinValue);
     setHighPrice(Math.max(...data.map(d => d.y)));
     setLowPrice(Math.min(...data.map(d => d.y)));
 
@@ -143,9 +146,10 @@ const TradingChart: React.FC<TradingChartProps> = ({ coinValue }) => {
 
   useEffect(() => {
     updateChart(currentTimeframe);
+    // Changed interval from 5000 to 10000 (10 seconds)
     const interval = setInterval(() => {
       updateChart(currentTimeframe);
-    }, 5000);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, [currentTimeframe]);
